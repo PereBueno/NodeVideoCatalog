@@ -1,6 +1,6 @@
 // server.js
 
-// SetUp
+// SetUp - external
 var express = require('express');
 var app = express(); 							// Creating express application
 var mongoose = require ('mongoose');			// Including mongoose to create mongo objects
@@ -17,6 +17,10 @@ app.use(bodyParser.urlencoded({'extended':'true'}));	// parse application/x-www-
 app.use(bodyParser.json());						// parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride());						// to use our own DELETE & PUT
+
+// App preparation
+var dataModel = require('./public/dataModel.js');
+var Todo = mongoose.model(dataModel.TODO.name, dataModel.TODO.value);
 
 // Start the server, listen in port 8080
 app.listen(8080);
