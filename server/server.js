@@ -8,6 +8,9 @@ var morgan = require('morgan');					// Morgan to send messages to log console
 var bodyParser = require ('body-parser');		// BodyParser, to pull info from HTML POST
 var methodOverride = require('method-override');	// To simulate DELETE and PUT
 
+var request = require("request");
+var $ = require('jQuery');
+
 // Config
 
 //mongoose.connect('mongodb://localhost:27017'); 	//Connect to mongo in localhost 
@@ -67,11 +70,13 @@ function runCypherQuery(query, params, callback) {
 
 // Launching initial queries
 
-runCypherQuery(getAllClips, {}, function (err, resp){
+runCypherQuery(getAllClipTags, {}, function (err, resp){
 	if (err)
 		console.error(err);
-	else
+	else{
 		console.log("Got response from Neo: " + resp);
+		$.each(resp, function (i, item){console.log(i + " - " + item)});
+	}
 });
 
 // Start the server, listen in port 8080
