@@ -9,7 +9,16 @@ var bodyParser = require ('body-parser');		// BodyParser, to pull info from HTML
 var methodOverride = require('method-override');	// To simulate DELETE and PUT
 
 var request = require("request");
-var $ = require('jQuery');
+var $ = require('jquery');
+
+require("jsdom").env("", function(err, window) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+ 
+	$ = require("jquery")(window);
+});
 
 // Config
 
@@ -47,37 +56,57 @@ var getAllClipTags = {
   "statements": [
     {
       "statement": "MATCH (c:clipTag) return c",
+      "parameters": {},
+      "resultDataContents": ["row"]
+      //"includeStats": false
+    }
+  ]
+};
+
+var getEverything = {
+  "statements": [
+    {
+      "statement": "MATCH (c) return c",
       "resultDataContents": [
-        "row"
+        "row", "graph"
         ],
       "includeStats": false
     }
   ]
-}
+};
 
 // ******* ENDOF Neo4j queries
 
 // Base function that allows us to launch cypher queries
-function runCypherQuery(query, params, callback) {
+
+function runCypherQuery(query, params, callback) {	
   request.post({
       uri: neoURL,
-      json: {statements: [{statement: query, parameters: params}]}
+      accept: 'application/json, text/plain, */*',
+      'content-type': 'application/json;charset=utf-8',
+      'X-stream': true,
+      json: query
     },
     function (err, res, body) {
       callback(err, body);
-    })
+    });
 }
 
 // Launching initial queries
+var allClipTags; 
 
 runCypherQuery(getAllClipTags, {}, function (err, resp){
 	if (err)
 		console.error(err);
-	else{
-		console.log("Got response from Neo: " + resp);
-		$.each(resp, function (i, item){console.log(i + " - " + item)});
+	else{			
+		console.log("[OK] Got response from Neo: getAllClipTags");		
+		console.log("Fields " + resp.results[0].data);
+		allClipTags = resp.results[0].data;
+		$.each(allClipTags, function(item, i){console.log(JSON.stringify(i.row))});
 	}
 });
+
+console.log("We have " + allClipTags);
 
 // Start the server, listen in port 8080
 app.listen(8080);
