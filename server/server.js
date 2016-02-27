@@ -22,15 +22,59 @@ app.use(methodOverride());						// to use our own DELETE & PUT
 //var dataModel = require('./private/dataModel.js');
 //var Todo = mongoose.model(dataModel.TODO.name, dataModel.TODO.value);
 
-var db = require('./private/dbCalls.js');
+//var db = require('./private/dbCalls.js');
 
 //API definition
-app.get('/api/todos', db.getAll);
-app.post('/api/todos', db.createTodo);
-app.delete('/api/todos/:todo_id', db.deleteTodo);
+//app.get('/api/todos', db.getAll);
+//app.post('/api/todos', db.createTodo);
+//app.delete('/api/todos/:todo_id', db.deleteTodo);
 
+/**
+ * Definition of Neo4j REST API, urls & queries
+ */
+
+ var host="192.168.1.9"
+ var port="7474"
+ var url="/db/data/transaction"
+
+ var neoURL="http://"+host+":"+port+url;
+
+// ******* Neo4j queries
+var getAllClipTags = {
+  "statements": [
+    {
+      "statement": "MATCH (c:clipTag) return c",
+      "resultDataContents": [
+        "row"
+        ],
+      "includeStats": false
+    }
+  ]
+}
+
+// ******* ENDOF Neo4j queries
+
+// Base function that allows us to launch cypher queries
+function runCypherQuery(query, params, callback) {
+  request.post({
+      uri: neoURL,
+      json: {statements: [{statement: query, parameters: params}]}
+    },
+    function (err, res, body) {
+      callback(err, body);
+    })
+}
+
+// Launching initial queries
+
+runCypherQuery(getAllClips, {}, function (err, resp){
+	if (err)
+		console.error(err);
+	else
+		console.log("Got response from Neo: " + resp);
+});
 
 // Start the server, listen in port 8080
 app.listen(8080);
 console.log("[START] VideoCatalog application listening on port 8080");
-console.log(db);
+//console.log(db);
