@@ -21,6 +21,10 @@
     <!-- Custom styles for this template -->
     <link href="theme.css" rel="stylesheet">
 
+    <!-- Main core files, with the controller -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"/>
+    <script src="core.js"> </script>
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>
@@ -32,7 +36,7 @@
     <![endif]-->
   </head>
 
-  <body role="document">
+  <body role="document" ng-app="NodeVideoCatalog" ng-controller="mainController">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -68,14 +72,83 @@
       </div>
     </nav>
 
+
     <div class="container theme-showcase" role="main">
+
+    	<div class="jumbotron">
+        	<h1>Base template</h1>
+        	<p>Starting with all the components here, template down</p>
+      	</div>	
+
+      	<!-- Labels div -->
+      <div class="page-header">
+        <h1>Labels: {{ allClipTags.length }} so far...</h1>
+      </div>
+      <h1>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </h1>
+      <h2>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </h2>
+      <h3>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </h3>
+      <h4>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </h4>
+      <h5>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </h5>
+      <h6>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </h6>
+      <p>
+        <span class="label label-default">Default</span>
+        <span class="label label-primary">Primary</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-info">Info</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Danger</span>
+      </p>
+      <!-- ENDOF labels div -->
+
+      <!-- TEMPLATE starts here -->
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Theme example</h1>
         <p>This is a template showcasing the optional theme stylesheet included in Bootstrap. Use it as a starting point to create something more unique by building on or modifying it.</p>
       </div>
-
 
       <div class="page-header">
         <h1>Buttons</h1>

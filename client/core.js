@@ -1,7 +1,8 @@
 // core.js
 
-var scotchTodo = angular.module('scotchTodo', []);
+var VideoCatalog = angular.module('NodeVideoCatalog', []);
 
+VideoCatalog.controller ("mainController", [$scope, 
 function mainController ($scope, $http){
 	$scope.formData = {};
 
@@ -39,3 +40,5 @@ function mainController ($scope, $http){
 			});
 	};
 };
+
+);

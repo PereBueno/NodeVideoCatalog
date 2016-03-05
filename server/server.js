@@ -23,7 +23,7 @@ require("jsdom").env("", function(err, window) {
 // Config
 
 //mongoose.connect('mongodb://localhost:27017'); 	//Connect to mongo in localhost 
-app.use(express.static(__dirname + '/public'));	// set the statics location
+app.use(express.static(__dirname + '/client'));	// set the statics location
 app.use(morgan('dev'));							// Set log level to dev, better to change it
 app.use(bodyParser.urlencoded({'extended':'true'}));	// parse application/x-www-form-urlencoded
 app.use(bodyParser.json());						// parse application/json
@@ -107,6 +107,11 @@ runCypherQuery(getAllClipTags, {}, function (err, resp){
 });
 
 console.log("We have " + allClipTags);
+
+var options = {
+  index: "index.html"
+};
+app.use('/', express.static('client', options));
 
 // Start the server, listen in port 8080
 app.listen(8080);
