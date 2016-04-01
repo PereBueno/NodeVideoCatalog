@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="NodeVideoCatalog">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Theme Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="assets/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+-->
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+<!--  <link href="assets/css/select2.css" rel="stylesheet"> -->
+
+    <!-- Main core files, with the controller -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+    <script src="core.js"> </script>        
+    
+    <script src="assets/js/select2.min.js"> </script>
+
+    <!-- Main core files, with the controller -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"> </script>
+    <script src="core.js"> </script>
+    
+    
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document" ng-controller="mainController">
+
+   <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Video Catalog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/" target="_self">Home</a></li>
+            <li><a href="/clips" target="_self">Scenes</a></li>
+            <li class="active"><a href="/girls" target="_self">Girls</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Scene tags <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li> <a href="#" data-toggle="modal" data-target="#clipTagModal"> New clip tag</a></li>
+                <li ng-repeat="tag in allClipTags"><a href="#">{{ tag.row[0].name}}</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Girl tags <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li> <a href="#" data-toggle="modal" data-target="#girlTagModal"> New girl tag</a></li>
+                <li ng-repeat="tag in allGirlTags"><a href="#">{{ tag.row[0].name}}</a></li>                
+              </ul>
+            </li>
+            <li>
+            <button type="button" style="margin-top:10px" class="btn btn-default btn-sm" data-toggle="modal" data-target="#clipModal">New Clip</button>
+            </li>
+            <li>
+            <button type="button" style="margin-top:10px;margin-left: 25px" class="btn btn-default btn-sm" data-toggle="modal" data-target="#girlModal">New Girl</button>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+    <div class="container theme-showcase" role="main">
+
+    <!-- Modal t handle the new girl tag form -->
+      <div id="girlTagModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add new girl tag</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group row">
+                  <label for="girlTag" class="col-sm-2 form-control-label"> Tag </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="girlTag" ng-model="girlTag.name" placeholder="Girl tag" ng-change="$scope.newTag.changed=true;"/>
+                  </div>
+                </div>
+                
+                <div class="form-group row">                  
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-secondary" ng-click="saveGirlTag(girlTag)">Save</button>
+                    <span class="label label-danger" ng-show="girlTag.changed==true" >
+                      Changes! 
+                    </span>
+                    <span class="label label-success" ng-show="girlTag.saved==true" >
+                      Saved
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="girlTag={};">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- End of the modal -->
+
+      <!-- Modal t handle the new clip tag form -->
+      <div id="clipTagModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add new clip tag</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group row">
+                  <label for="clipTag" class="col-sm-2 form-control-label"> Tag </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="clipTag" ng-model="clipTag.name" placeholder="Clip tag" ng-change="$scope.newClip.changed=true;"/>
+                  </div>
+                </div>
+                
+                <div class="form-group row">                  
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-secondary" ng-click="saveClipTag(clipTag)">Save</button>
+                    <span class="label label-danger" ng-show="clipTag.changed==true" >
+                      Changes! 
+                    </span>
+                    <span class="label label-success" ng-show="clipTag.saved==true" >
+                      Saved
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clipTag={};">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- End of the modal -->
+
+      <!-- Modal t handle the new girl form -->
+      <div id="girlModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add new girl</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group row">
+                  <label for="girlName" class="col-sm-2 form-control-label"> Name </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="girlName" ng-model="newGirl.name" placeholder="Name" ng-change="$scope.newGirl.changed=true;"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="girlBorn" class="col-sm-2 form-control-label"> Born </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="girlBorn" ng-model="newGirl.born" placeholder="YYYY" ng-change="$scope.newGirl.changed=true;"/>
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                  <label for="girlRating" class="col-sm-2 form-control-label"> Rating </label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="girlRating" ng-model="newGirl.rating">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>                      
+                    </select>
+                  </div>
+                </div> 
+
+                <div class="form-group row">
+                  <label class="col-sm-2 form-control-label">Tags</label>
+                  <div class="col-sm-10" class="form-control">
+                    <select class="from-control" id="girlTags" ng-model="newGirl.tags" multiple="multiple" style="width:100%" ng-change="$scope.newGirl.changed=true;">
+                      <option ng-repeat="tag in allGirlTags">{{tag.row[0].name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <script>
+                  $(girlTags).select2();
+                </script>
+
+                <div class="form-group row">                  
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-secondary" ng-click="saveGirl(newGirl)">Save</button>
+                    <span class="label label-danger" ng-show="newGirl.changed==true" >
+                      Changes! 
+                    </span>
+                    <span class="label label-success" ng-show="newGirl.saved==true" >
+                      Saved
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="newGirl={};">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- End of the modal -->
+
+    <!-- Modal t handle the new clip form -->
+      <div id="clipModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add new scene</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group row">
+                  <label for="clipTitle" class="col-sm-2 form-control-label"> Title </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="clipTitle" ng-model="newClip.title" placeholder="Title"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="clipFile" class="col-sm-2 form-control-label"> File </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="clipFile" ng-model="newClip.file" placeholder="File"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="clipLength" class="col-sm-2 form-control-label"> Length </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="clipLength" ng-model="newClip.length" placeholder="MM:SS"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="clipLocation" class="col-sm-2 form-control-label"> Location </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="clipLocation" ng-model="newClip.location" placeholder="Host:Folder"/>
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                  <label for="clipRating" class="col-sm-2 form-control-label"> Rating </label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="clipRating" ng-model="newClip.rating">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>                      
+                    </select>
+                  </div>
+                </div>                
+
+                <div class="form-group row">
+                  <label for="clipTags" class="col-sm-2 form-control-label">Tags</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="clipTags" data-ui-select2="" ng-model="newClip.tags" multiple="multiple" style="width:100%" ui-select2="{multiple:true}">
+                      <option ng-repeat="tag in allClipTags" value="{{tag.row[0].name}}">{{tag.row[0].name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <script>
+                  $("#clipTags").select2();
+                </script>
+               
+                <div class="form-group row">
+                  <label class="col-sm-2 form-control-label">Actresses</label>
+                  <div class="col-sm-10" class="form-control">
+                    <select class="from-control" id="girls" ng-model="newClip.actresses" multiple="multiple" style="width:100%">
+                      <option ng-repeat="tag in allGirls" value="{{tag.row[0].name}}">{{tag.row[0].name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <script>
+                  $(girls).select2();
+                </script>
+
+                <div class="form-group row">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-secondary" ng-click="saveClip(newClip)">Save</button>
+                    <span class="label label-danger" ng-show="newClip.changed==true" >
+                      Changes! 
+                    </span>
+                    <span class="label label-success" ng-show="newClip.saved==true" >
+                      Saved
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- End of the modal -->
+
+    	<div class="jumbotron">
+        	<h1>Base template</h1>
+        	<p>Starting with all the components here, template down</p>
+      	</div>	
+
+      	<!-- Labels div -->      
+		<div class="page-header">
+      <h1>Panels with all the info...</h1>
+    </div>
+      <div class="row">
+        <div class="col-sm-3" ng-repeat="girl in allGirls">
+          
+              <a href="girl.html?girl={{girl.row[1]}}" target="_self" class="thumbnail">
+                <h3 class="panel-title">{{girl.row[0].name}}</h3>              
+               <img src="../assets/images/girls/main/{{girl.row[0].name}}.jpg" class="img-thumbnail" style="max-height:320px"/>
+              </a>         
+        </div><!-- /.col-sm-4 -->
+      </div>
+        
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
